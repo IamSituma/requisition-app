@@ -22,6 +22,7 @@ import { Label } from "@/components/ui/label"
 import { useToast } from "@/hooks/use-toast"
 import type { UserRole } from "@/lib/types"
 import { formatDistanceToNow } from "date-fns"
+import { DashboardHeader } from "@/components/dashboard-header" // import reusable header
 
 export default function AdminDashboard() {
   const { user, logout } = useAuth()
@@ -117,34 +118,8 @@ export default function AdminDashboard() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="border-b bg-card">
-        <div className="container mx-auto flex h-16 items-center justify-between px-4">
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary">
-              <Shield className="h-5 w-5 text-primary-foreground" />
-            </div>
-            <div>
-              <h1 className="text-lg font-semibold text-foreground">Requisition System</h1>
-              <p className="text-xs text-muted-foreground">Admin Dashboard</p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2 rounded-lg bg-muted px-3 py-2">
-              <div className="text-right">
-                <p className="text-sm font-medium text-foreground">{user?.name}</p>
-                <p className="text-xs text-muted-foreground">Administrator</p>
-              </div>
-            </div>
-
-            <Button variant="outline" size="sm" onClick={handleLogout}>
-              <LogOut className="mr-2 h-4 w-4" />
-              Sign Out
-            </Button>
-          </div>
-        </div>
-      </header>
+      {/* Reusable Dashboard Header */}
+      <DashboardHeader title="Requisition System" subtitle="Admin Dashboard" />
 
       {/* Main Content */}
       <main className="container mx-auto p-6">

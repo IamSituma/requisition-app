@@ -143,9 +143,9 @@ export default function LoginPage() {
                     variant="outline"
                     onClick={() => setStep("email")}
                     className="flex-1 h-12 text-base"
-                    style={{ borderColor: "#9A2582", color: "#9A2582" }}
+                    style={{ borderColor: "#9A2582", color: "#FFFFFF" }}
                     onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#03124D")}
-                    onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
+                    onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#9A2582")}
                   >
                     Back
                   </Button>

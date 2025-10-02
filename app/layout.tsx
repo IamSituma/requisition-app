@@ -11,9 +11,8 @@ import { Suspense } from "react"
 import "./globals.css"
 
 export const metadata: Metadata = {
-  title: "Requisition Management System",
+  title: "SprintUG Requisition Management System",
   description: "IT Equipment Requisition and Approval System",
-  generator: "v0.app",
 }
 
 export default function RootLayout({

@@ -8,68 +8,29 @@ import { Package, LogOut, Bell, DollarSign, FileText } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { RequisitionStatusBadge } from "@/components/requisition-status-badge"
 import { formatDistanceToNow } from "date-fns"
+import { DashboardHeader } from "@/components/dashboard-header"
 
 export default function ProjectsDashboard() {
   const { user, logout } = useAuth()
   const { requisitions, notifications } = useRequisitions()
   const router = useRouter()
 
+  if (!user || user.role !== "projects") return null
+
   const unreadNotifications = notifications.filter((n) => n.userId === user?.id && !n.read)
+  const pricingNeeded = requisitions.filter((r) => r.status === "pricing_needed")
+  const pricingProvided = requisitions.filter((r) => r.status === "pricing_received")
 
   const handleLogout = () => {
     logout()
     router.push("/")
   }
 
-  const pricingNeeded = requisitions.filter((r) => r.status === "pricing_needed")
-  const pricingProvided = requisitions.filter((r) => r.status === "pricing_received")
-
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="border-b bg-card">
-        <div className="container mx-auto flex h-16 items-center justify-between px-4">
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary">
-              <Package className="h-5 w-5 text-primary-foreground" />
-            </div>
-            <div>
-              <h1 className="text-lg font-semibold text-foreground">Requisition System</h1>
-              <p className="text-xs text-muted-foreground">Projects Dashboard</p>
-            </div>
-          </div>
+      {/* Reusable Header */}
+      <DashboardHeader title="Requisition System" subtitle="Projects Dashboard" />
 
-          <div className="flex items-center gap-3">
-            <Button variant="ghost" size="sm" onClick={() => router.push("/reports")}>
-              <FileText className="mr-2 h-4 w-4" />
-              Reports
-            </Button>
-
-            <Button variant="ghost" size="icon" className="relative" onClick={() => router.push("/notifications")}>
-              <Bell className="h-5 w-5" />
-              {unreadNotifications.length > 0 && (
-                <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-destructive text-xs text-destructive-foreground">
-                  {unreadNotifications.length}
-                </span>
-              )}
-            </Button>
-
-            <div className="flex items-center gap-2 rounded-lg bg-muted px-3 py-2">
-              <div className="text-right">
-                <p className="text-sm font-medium text-foreground">{user?.name}</p>
-                <p className="text-xs text-muted-foreground">Projects Team</p>
-              </div>
-            </div>
-
-            <Button variant="outline" size="sm" onClick={handleLogout}>
-              <LogOut className="mr-2 h-4 w-4" />
-              Sign Out
-            </Button>
-          </div>
-        </div>
-      </header>
-
-      {/* Main Content */}
       <main className="container mx-auto p-6">
         {/* Stats Overview */}
         <div className="mb-6 grid gap-4 md:grid-cols-3">
@@ -141,9 +102,7 @@ export default function ProjectsDashboard() {
                       </div>
                       <div>
                         <p className="text-sm font-medium text-muted-foreground">Escalated</p>
-                        <p className="text-sm text-foreground">
-                          {formatDistanceToNow(req.updatedAt, { addSuffix: true })}
-                        </p>
+                        <p className="text-sm text-foreground">{formatDistanceToNow(req.updatedAt, { addSuffix: true })}</p>
                       </div>
                     </div>
                     {req.notes && (
