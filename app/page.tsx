@@ -32,12 +32,10 @@ export default function LoginPage() {
       return
     }
 
-    // Generate a random 6-digit code
     const code = Math.floor(100000 + Math.random() * 900000).toString()
     setSentCode(code)
     setStep("verify")
 
-    // In production, this would send an actual email
     console.log(`[v0] Verification code for ${email}: ${code}`)
     alert(`Demo: Your verification code is ${code}`)
   }
@@ -48,9 +46,6 @@ export default function LoginPage() {
       setError("Invalid verification code")
       return
     }
-
-    // In production, this would verify the code server-side and create a session
-    // For now, we'll use the mock login
     login(email)
   }
 
@@ -63,30 +58,40 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="relative flex min-h-screen flex-col items-center justify-center p-4">
+    <div className="relative flex min-h-screen items-center justify-center p-4 bg-background">
+      {/* Background */}
       <div className="absolute inset-0 z-0">
-        <Image src="/auth-background.jpg" alt="Background" fill className="object-cover opacity-20" priority />
+        <Image
+          src="/auth-background.jpg"
+          alt="Background"
+          fill
+          className="object-cover opacity-20"
+          priority
+        />
         <div className="absolute inset-0 bg-gradient-to-br from-background/95 via-background/90 to-background/95" />
       </div>
 
-      <div className="relative z-10 flex flex-col items-center">
-        <div className="mb-8 flex flex-col items-center gap-1">
-          <div className="relative h-40 w-40">
-            <Image src="/sprint.png" alt="Sprint UG Logo" fill className="object-contain" />
-          </div>
+      {/* Content (slightly moved up) */}
+      <div className="relative z-10 flex flex-col items-center -mt-10 w-full max-w-md">
+        {/* Logo */}
+        <div className="relative h-36 w-36 sm:h-40 sm:w-40 md:h-48 md:w-48">
+          <Image src="/sprint.png" alt="Sprint UG Logo" fill className="object-contain" />
         </div>
-        <Card className="w-full max-w-md">
-          <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl">
+
+        {/* Card slightly below logo */}
+        <Card className="w-full -mt-12">
+          <CardHeader className="space-y-0.5 pt-6 text-center">
+            <CardTitle className="text-xl sm:text-3xl">
               {step === "email" ? "Sign in to your Account" : "Verify your email"}
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-sm sm:text-sm">
               {step === "email"
                 ? "Enter your email address to receive a verification code"
                 : `We sent a verification code to ${email}`}
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
+
+          <CardContent className="space-y-3">
             {step === "email" ? (
               <>
                 <div className="space-y-2">
@@ -98,13 +103,20 @@ export default function LoginPage() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && handleSendCode()}
+                    className="h-12 text-base"
                   />
                 </div>
 
                 {error && <p className="text-sm text-destructive">{error}</p>}
 
-                <Button onClick={handleSendCode} className="w-full">
-                  <Mail className="mr-2 h-4 w-4" />
+                <Button
+                  onClick={handleSendCode}
+                  className="w-full h-12 text-white text-base flex items-center justify-center"
+                  style={{ backgroundColor: "#9A2582" }}
+                  onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#03124D")}
+                  onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#9A2582")}
+                >
+                  <Mail className="mr-2 h-5 w-5" />
                   Send Verification Code
                 </Button>
               </>
@@ -120,18 +132,32 @@ export default function LoginPage() {
                     onChange={(e) => setVerificationCode(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && handleVerifyCode()}
                     maxLength={6}
+                    className="h-12 text-base"
                   />
                 </div>
 
                 {error && <p className="text-sm text-destructive">{error}</p>}
 
                 <div className="flex gap-2">
-                  <Button variant="outline" onClick={() => setStep("email")} className="flex-1">
+                  <Button
+                    variant="outline"
+                    onClick={() => setStep("email")}
+                    className="flex-1 h-12 text-base"
+                    style={{ borderColor: "#9A2582", color: "#9A2582" }}
+                    onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#03124D")}
+                    onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
+                  >
                     Back
                   </Button>
-                  <Button onClick={handleVerifyCode} className="flex-1">
+                  <Button
+                    onClick={handleVerifyCode}
+                    className="flex-1 h-12 text-base"
+                    style={{ backgroundColor: "#9A2582", color: "#ffffff" }}
+                    onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#03124D")}
+                    onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#9A2582")}
+                  >
                     Verify & Sign In
-                    <ArrowRight className="ml-2 h-4 w-4" />
+                    <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                 </div>
               </>
@@ -139,7 +165,10 @@ export default function LoginPage() {
 
             <div className="rounded-lg bg-muted p-3 text-xs text-muted-foreground">
               <p className="font-medium mb-1">Demo Mode</p>
-              <p>In production, verification codes will be sent via email. For demo, the code is shown in an alert.</p>
+              <p>
+                In production, verification codes will be sent via email. For demo, the code is
+                shown in an alert.
+              </p>
             </div>
           </CardContent>
         </Card>
